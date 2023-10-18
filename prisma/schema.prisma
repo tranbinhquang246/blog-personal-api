@@ -1,0 +1,117 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id() @default(uuid()) @map("uuid")
+  username  String?   @unique
+  email     String    @unique
+  password  String
+  role      String
+  createdAt DateTime  @default(now()) @map("createdAt")
+  updatedAt DateTime  @updatedAt @map("updatedAt")
+  profile   Profile?
+  post      Post[]
+  comment   Comment[]
+}
+
+model Profile {
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String  @unique
+  avatar    String?
+  firstName String? @map("firstName")
+  lastName  String? @map("lastName")
+}
+
+model Post {
+  id        String          @id() @default(uuid()) @map("uuid")
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String          @unique
+  title     String
+  content   String
+  createdAt DateTime        @default(now()) @map("createdAt")
+  updatedAt DateTime        @updatedAt @map("updatedAt")
+  gallery   Gallery[]
+  tag       Post_Tag[]
+  category  Post_Category[]
+  comment   Comment[]
+}
+
+model Category {
+  id        String          @id() @default(uuid()) @map("uuid")
+  name      String          @unique
+  createdAt DateTime        @default(now()) @map("createdAt")
+  updatedAt DateTime        @updatedAt @map("updatedAt")
+  post      Post_Category[]
+}
+
+model Tag {
+  id        String     @id() @default(uuid()) @map("uuid")
+  name      String     @unique
+  createdAt DateTime   @default(now()) @map("createdAt")
+  updatedAt DateTime   @updatedAt @map("updatedAt")
+  post      Post_Tag[]
+}
+
+model Gallery {
+  id        String   @id() @default(uuid()) @map("uuid")
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String   @unique
+  createdAt DateTime @default(now()) @map("createdAt")
+  updatedAt DateTime @updatedAt @map("updatedAt")
+}
+
+model Post_Tag {
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId String @unique
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  tagId  String @unique
+}
+
+model Post_Category {
+  post       Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId     String   @unique
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId String   @unique
+}
+
+model Comment {
+  id        String   @id() @default(uuid()) @map("uuid")
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @unique
+  createdAt DateTime @default(now()) @map("createdAt")
+  updatedAt DateTime @updatedAt @map("updatedAt")
+}
+
+model About_Author {
+  id           String    @id() @default(uuid()) @map("uuid")
+  fullName     String
+  aliasName    String
+  introduction String
+  interrest    String[]
+  reason       String[]
+  target       String[]
+  experience   String[]
+  createdAt    DateTime  @default(now()) @map("createdAt")
+  updatedAt    DateTime  @updatedAt @map("updatedAt")
+  Progress     Progress?
+}
+
+model Progress {
+  author    About_Author @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  String       @unique
+  title     String
+  content   String
+  createdAt DateTime     @default(now()) @map("createdAt")
+  updatedAt DateTime     @updatedAt @map("updatedAt")
+}
