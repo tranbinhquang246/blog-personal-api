@@ -40,8 +40,8 @@ model Post {
   createdAt DateTime        @default(now()) @map("createdAt")
   updatedAt DateTime        @updatedAt @map("updatedAt")
   gallery   Gallery[]
-  tag       Post_Tag[]
-  category  Post_Category[]
+  tag       PostTag[]
+  category  PostCategory[]
   comment   Comment[]
 }
 
@@ -50,7 +50,7 @@ model Category {
   name      String          @unique
   createdAt DateTime        @default(now()) @map("createdAt")
   updatedAt DateTime        @updatedAt @map("updatedAt")
-  post      Post_Category[]
+  post      PostCategory[]
 }
 
 model Tag {
@@ -58,7 +58,7 @@ model Tag {
   name      String     @unique
   createdAt DateTime   @default(now()) @map("createdAt")
   updatedAt DateTime   @updatedAt @map("updatedAt")
-  post      Post_Tag[]
+  post      PostTag[]
 }
 
 model Gallery {
@@ -69,14 +69,14 @@ model Gallery {
   updatedAt DateTime @updatedAt @map("updatedAt")
 }
 
-model Post_Tag {
+model PostTag {
   post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId String @unique
   tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
   tagId  String @unique
 }
 
-model Post_Category {
+model PostCategory {
   post       Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId     String   @unique
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
@@ -93,22 +93,22 @@ model Comment {
   updatedAt DateTime @updatedAt @map("updatedAt")
 }
 
-model About_Author {
+model AboutAuthor {
   id           String    @id() @default(uuid()) @map("uuid")
   fullName     String
   aliasName    String
   introduction String
-  interrest    String[]
+  interest    String[]
   reason       String[]
   target       String[]
   experience   String[]
   createdAt    DateTime  @default(now()) @map("createdAt")
   updatedAt    DateTime  @updatedAt @map("updatedAt")
-  Progress     Progress?
+  lifeProcess     LifeProcess?
 }
 
-model Progress {
-  author    About_Author @relation(fields: [authorId], references: [id], onDelete: Cascade)
+model LifeProcess {
+  author    AboutAuthor @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  String       @unique
   title     String
   content   String

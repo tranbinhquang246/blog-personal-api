@@ -39,7 +39,6 @@ export class UsersService {
           throw new BadRequestException(`Email already exist`);
         }
       }
-
       throw new BadRequestException(`Request Failed`);
     }
   }
