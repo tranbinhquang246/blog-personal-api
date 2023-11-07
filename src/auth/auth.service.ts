@@ -14,7 +14,7 @@ export class AuthService {
 
   async validateUser(data: AuthDto) {
     const { password, email } = data;
-    const user = await this.usersService.findUserwithEmail(email);
+    const user = await this.usersService.findUserWithEmail(email);
     if (user && (await bcrypt.compare(password, user.password))) {
       //   const { password, ...result } = user;
       return user;
@@ -23,7 +23,7 @@ export class AuthService {
   }
 
   async login(data: AuthDto) {
-    const dataUser = await this.usersService.findUserwithEmail(data.email);
+    const dataUser = await this.usersService.findUserWithEmail(data.email);
     const payload = {
       id: dataUser.id,
       email: dataUser.email,

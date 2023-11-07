@@ -1,14 +1,35 @@
+version: '1.0'
+
 services:
-  postgres:
+  db-postgres:
     image: postgres:16.0-alpine3.18
     restart: always
     environment:
       - POSTGRES_USER=blog_personal
       - POSTGRES_PASSWORD=123456
+    container_name: blog-personal-postgres
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - ./postgres-data:/var/lib/postgresql/data
     ports:
       - '5432:5432'
+    env_file:
+      - .env
 
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: blog-personal-nest
+    environment:
+      - PORT=${PORT}
+    ports:
+      - '5000:5000'
+    depends_on:
+      - db-postgres
+    volumes:
+      - ./src:/app/src
+    env_file:
+      - .env
 volumes:
-  postgres:
+  db-postgres:
+    name: blog-personal-postgres-nest
