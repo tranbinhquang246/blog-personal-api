@@ -8,6 +8,7 @@ import * as bcrypt from 'bcrypt';
 
 import { PrismaService } from '@/prisma/prisma.service';
 import { RegisterUserDto } from '@/users/dto/registerUser.dto';
+import { UpdateInfoDto } from './dto/update-profile.dto';
 
 @Injectable()
 export class UsersService {
@@ -43,7 +44,7 @@ export class UsersService {
     }
   }
 
-  async findUserwithEmail(email: string) {
+  async findUserWithEmail(email: string): Promise<User> {
     const findUser = await this.prisma.user.findUnique({
       where: {
         email: email,
@@ -53,5 +54,68 @@ export class UsersService {
       throw new NotFoundException(`User does not exist`);
     }
     return findUser;
+  }
+
+  async findAll(): Promise<User[]> {
+    const users = await this.prisma.user.findMany({
+      include: { profile: true },
+    });
+    return users;
+  }
+
+  async findUserWithId(id: string): Promise<User> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: id },
+      include: {
+        profile: true,
+      },
+    });
+    return user;
+  }
+
+  async updatePassword(id: string, password: string) {
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(password, salt);
+    const updateUser = await this.prisma.user.update({
+      where: { id: id },
+      data: { password: hashedPassword },
+    });
+    return updateUser;
+  }
+
+  async getProfileUser(id: string) {
+    const profileUser = await this.prisma.profile.findUnique({
+      where: { userId: id },
+    });
+    return profileUser;
+  }
+
+  async updateProfileUser(
+    id: string,
+    updateProfileUserDto: UpdateInfoDto,
+    avatar: Express.Multer.File,
+  ) {
+    if (avatar) {
+      const updateUserInfo = await this.prisma.profile.update({
+        where: { userId: id },
+        data: {
+          avatar: `${process.env.URL_PICTURE_AVATAR}${avatar.filename}`,
+        },
+      });
+      return updateUserInfo;
+    }
+    const updateUserInfo = await this.prisma.profile.update({
+      where: { userId: id },
+      data: updateProfileUserDto,
+    });
+    return updateUserInfo;
+  }
+
+  async deleteUser(id: string) {
+    const deleteUser = await this.prisma.user.delete({
+      where: { id: id },
+      include: { profile: true },
+    });
+    return deleteUser;
   }
 }
