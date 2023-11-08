@@ -8,6 +8,7 @@ import { AuthModule } from '@/auth/auth.module';
 import { UsersModule } from '@/users/users.module';
 import { AuthorModule } from './author/author.module';
 import { CategoryModule } from './category/category.module';
+import { TagModule } from './tag/tag.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { CategoryModule } from './category/category.module';
     UsersModule,
     AuthorModule,
     CategoryModule,
+    TagModule,
   ],
   providers: [],
 })
