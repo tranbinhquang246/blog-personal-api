@@ -7,6 +7,7 @@ import { PrismaModule } from '@/prisma/prisma.module';
 import { AuthModule } from '@/auth/auth.module';
 import { UsersModule } from '@/users/users.module';
 import { AuthorModule } from './author/author.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { AuthorModule } from './author/author.module';
     AuthModule,
     UsersModule,
     AuthorModule,
+    CategoryModule,
   ],
   providers: [],
 })
