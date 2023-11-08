@@ -21,7 +21,6 @@ export class CategoryService {
       });
       return createdCategory;
     } catch (error) {
-      console.log(error);
       throw new BadRequestException('Create failed');
     }
   }
