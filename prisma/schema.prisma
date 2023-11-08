@@ -65,6 +65,7 @@ model Gallery {
   id        String   @id() @default(uuid()) @map("uuid")
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    String   @unique
+  url       String
   createdAt DateTime @default(now()) @map("createdAt")
   updatedAt DateTime @updatedAt @map("updatedAt")
 }
@@ -89,6 +90,7 @@ model Comment {
   postId    String   @unique
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String   @unique
+  comment   String
   createdAt DateTime @default(now()) @map("createdAt")
   updatedAt DateTime @updatedAt @map("updatedAt")
 }
@@ -96,22 +98,23 @@ model Comment {
 model AboutAuthor {
   id           String    @id() @default(uuid()) @map("uuid")
   fullName     String
-  aliasName    String
-  introduction String
+  aliasName    String?
+  introduction String?
   interest    String[]
   reason       String[]
   target       String[]
   experience   String[]
   createdAt    DateTime  @default(now()) @map("createdAt")
   updatedAt    DateTime  @updatedAt @map("updatedAt")
-  lifeProcess     LifeProcess?
+  // lifeProcess     LifeProcess?
 }
 
-model LifeProcess {
-  author    AboutAuthor @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  authorId  String       @unique
-  title     String
-  content   String
-  createdAt DateTime     @default(now()) @map("createdAt")
-  updatedAt DateTime     @updatedAt @map("updatedAt")
-}
+// model LifeProcess {
+  // id        String      @id() @default(uuid()) @map("uuid")
+  // author    AboutAuthor @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  // authorId  String       @unique
+  // title     String
+  // content   String?
+  // createdAt DateTime     @default(now()) @map("createdAt")
+  // updatedAt DateTime     @updatedAt @map("updatedAt")
+// }

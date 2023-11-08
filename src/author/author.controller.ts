@@ -16,6 +16,8 @@ import { UpdateAuthorDto } from './dto/update-author.dto';
 import { CreateAuthorDto } from './dto/create-author.dto';
 import { Auth } from '@/auth/decorators/auth.decorators';
 import { Role } from '@/auth/roles/roles.enum';
+import { CreateLifeProcessDto } from './dto/create-life-process.dto';
+import { UpdateLifeProcessDto } from './dto/update-life-process.dto';
 
 @Controller('author')
 export class AuthorController {
@@ -74,4 +76,55 @@ export class AuthorController {
     const deletedAuthor = await this.authorService.deleteAuthorInfo(id);
     return response.status(HttpStatus.OK).send(deletedAuthor);
   }
+
+  // Coming soon feature
+  // @Auth(Role.Admin)
+  // @Post('life-process')
+  // async createLifeProcess(@Res() response, @Body() data: CreateLifeProcessDto) {
+  //   const createdLifeProcess = await this.authorService.createLifeProcess(data);
+  //   if (!createdLifeProcess) {
+  //     throw new BadRequestException(`Request Failed`);
+  //   }
+  //   return response.status(HttpStatus.OK).send(createdLifeProcess);
+  // }
+
+  // @Auth(Role.Admin)
+  // @Get('life-process/:authorId')
+  // async getLifeProcessOfAuthor(
+  //   @Res() response,
+  //   @Param('authorId') authorId: string,
+  // ) {
+  //   const lifeProcess = await this.authorService.getLifeProcess(authorId);
+  //   if (!lifeProcess) {
+  //     throw new NotFoundException('No life process');
+  //   }
+  //   return response.status(HttpStatus.OK).send(lifeProcess);
+  // }
+
+  // @Auth(Role.Admin)
+  // @Patch('life-process/:id')
+  // async updateLifeProcess(
+  //   @Res() response,
+  //   @Param('id') id: string,
+  //   @Body() updateLifeProcessDto: UpdateLifeProcessDto,
+  // ) {
+  //   const updatedLifeProcess = await this.authorService.updateLifeProcess(
+  //     id,
+  //     updateLifeProcessDto,
+  //   );
+  //   if (!updatedLifeProcess) {
+  //     throw new BadRequestException(`Request Failed`);
+  //   }
+  //   return response.status(HttpStatus.OK).send(updatedLifeProcess);
+  // }
+
+  // @Auth(Role.Admin)
+  // @Delete('life-process/:id')
+  // async deleteLifeProcess(@Res() response, @Param('id') id: string) {
+  //   const deletedLifeProcess = await this.authorService.deleteLifeProcess(id);
+  //   if (!deletedLifeProcess) {
+  //     throw new BadRequestException(`Request Failed`);
+  //   }
+  //   return response.status(HttpStatus.OK).send(deletedLifeProcess);
+  // }
 }

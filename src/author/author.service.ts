@@ -6,6 +6,8 @@ import {
 import { UpdateAuthorDto } from './dto/update-author.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import { CreateAuthorDto } from './dto/create-author.dto';
+import { CreateLifeProcessDto } from './dto/create-life-process.dto';
+import { UpdateLifeProcessDto } from './dto/update-life-process.dto';
 
 @Injectable()
 export class AuthorService {
@@ -66,4 +68,55 @@ export class AuthorService {
       throw new BadRequestException('Bad request');
     }
   }
+
+  // Coming soon feature
+  // async createLifeProcess(data: CreateLifeProcessDto) {
+  //   try {
+  //     const newLifeProcess = await this.prisma.lifeProcess.create({
+  //       data: data,
+  //     });
+  //     return newLifeProcess;
+  //   } catch (error) {
+  //     console.log(error);
+  //     throw new BadRequestException('Bad request');
+  //   }
+  // }
+
+  // async getLifeProcess(authorId: string) {
+  //   try {
+  //     const lifeProcess = await this.prisma.lifeProcess.findMany({
+  //       where: { authorId: authorId },
+  //     });
+  //     return lifeProcess;
+  //   } catch (error) {
+  //     throw new BadRequestException('Bad request');
+  //   }
+  // }
+
+  // async updateLifeProcess(id: string, data: UpdateLifeProcessDto) {
+  //   try {
+  //     const updatedLifeProcess = await this.prisma.lifeProcess.update({
+  //       where: { id: id },
+  //       data: {
+  //         authorId: data.authorId,
+  //         title: data.title,
+  //         content: data.content,
+  //       },
+  //     });
+  //     return updatedLifeProcess;
+  //   } catch (error) {
+  //     throw new BadRequestException('Bad request');
+  //   }
+  // }
+
+  // async deleteLifeProcess(id: string) {
+  //   try {
+  //     const deletedLifeProcess = await this.prisma.lifeProcess.delete({
+  //       where: { id: id },
+  //     });
+  //     return deletedLifeProcess;
+  //   } catch (error) {
+  //     throw new BadRequestException('Bad request');
+  //   }
+  // }
 }

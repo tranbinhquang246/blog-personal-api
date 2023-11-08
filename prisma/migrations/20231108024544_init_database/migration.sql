@@ -55,6 +55,7 @@ CREATE TABLE "Tag" (
 CREATE TABLE "Gallery" (
     "uuid" TEXT NOT NULL,
     "postId" TEXT NOT NULL,
+    "url" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -62,13 +63,13 @@ CREATE TABLE "Gallery" (
 );
 
 -- CreateTable
-CREATE TABLE "Post_Tag" (
+CREATE TABLE "PostTag" (
     "postId" TEXT NOT NULL,
     "tagId" TEXT NOT NULL
 );
 
 -- CreateTable
-CREATE TABLE "Post_Category" (
+CREATE TABLE "PostCategory" (
     "postId" TEXT NOT NULL,
     "categoryId" TEXT NOT NULL
 );
@@ -78,6 +79,7 @@ CREATE TABLE "Comment" (
     "uuid" TEXT NOT NULL,
     "postId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "comment" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -85,28 +87,19 @@ CREATE TABLE "Comment" (
 );
 
 -- CreateTable
-CREATE TABLE "About_Author" (
+CREATE TABLE "AboutAuthor" (
     "uuid" TEXT NOT NULL,
     "fullName" TEXT NOT NULL,
-    "aliasName" TEXT NOT NULL,
-    "introduction" TEXT NOT NULL,
-    "interrest" TEXT[],
+    "aliasName" TEXT,
+    "introduction" TEXT,
+    "interest" TEXT[],
     "reason" TEXT[],
     "target" TEXT[],
     "experience" TEXT[],
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "About_Author_pkey" PRIMARY KEY ("uuid")
-);
-
--- CreateTable
-CREATE TABLE "Progress" (
-    "authorId" TEXT NOT NULL,
-    "title" TEXT NOT NULL,
-    "content" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL
+    CONSTRAINT "AboutAuthor_pkey" PRIMARY KEY ("uuid")
 );
 
 -- CreateIndex
@@ -131,25 +124,22 @@ CREATE UNIQUE INDEX "Tag_name_key" ON "Tag"("name");
 CREATE UNIQUE INDEX "Gallery_postId_key" ON "Gallery"("postId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Post_Tag_postId_key" ON "Post_Tag"("postId");
+CREATE UNIQUE INDEX "PostTag_postId_key" ON "PostTag"("postId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Post_Tag_tagId_key" ON "Post_Tag"("tagId");
+CREATE UNIQUE INDEX "PostTag_tagId_key" ON "PostTag"("tagId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Post_Category_postId_key" ON "Post_Category"("postId");
+CREATE UNIQUE INDEX "PostCategory_postId_key" ON "PostCategory"("postId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Post_Category_categoryId_key" ON "Post_Category"("categoryId");
+CREATE UNIQUE INDEX "PostCategory_categoryId_key" ON "PostCategory"("categoryId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Comment_postId_key" ON "Comment"("postId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Comment_userId_key" ON "Comment"("userId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Progress_authorId_key" ON "Progress"("authorId");
 
 -- AddForeignKey
 ALTER TABLE "Profile" ADD CONSTRAINT "Profile_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("uuid") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -161,22 +151,19 @@ ALTER TABLE "Post" ADD CONSTRAINT "Post_userId_fkey" FOREIGN KEY ("userId") REFE
 ALTER TABLE "Gallery" ADD CONSTRAINT "Gallery_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post"("uuid") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Post_Tag" ADD CONSTRAINT "Post_Tag_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post"("uuid") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "PostTag" ADD CONSTRAINT "PostTag_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post"("uuid") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Post_Tag" ADD CONSTRAINT "Post_Tag_tagId_fkey" FOREIGN KEY ("tagId") REFERENCES "Tag"("uuid") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "PostTag" ADD CONSTRAINT "PostTag_tagId_fkey" FOREIGN KEY ("tagId") REFERENCES "Tag"("uuid") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Post_Category" ADD CONSTRAINT "Post_Category_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post"("uuid") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "PostCategory" ADD CONSTRAINT "PostCategory_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post"("uuid") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Post_Category" ADD CONSTRAINT "Post_Category_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("uuid") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "PostCategory" ADD CONSTRAINT "PostCategory_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "Category"("uuid") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Comment" ADD CONSTRAINT "Comment_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post"("uuid") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Comment" ADD CONSTRAINT "Comment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("uuid") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Progress" ADD CONSTRAINT "Progress_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "About_Author"("uuid") ON DELETE CASCADE ON UPDATE CASCADE;
