@@ -37,6 +37,7 @@ model Post {
   userId    String
   title     String
   content   String
+  thumbnail String?         
   createdAt DateTime       @default(now()) @map("createdAt")
   updatedAt DateTime       @updatedAt @map("updatedAt")
   tag       PostTag[]
