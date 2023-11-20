@@ -124,8 +124,12 @@ export class UsersController {
         JSON.parse(JSON.stringify(data)),
         avatar,
       );
-      if (editedUserInfo && linkAvatarRemove) {
-        fs.unlinkSync(`uploads/${linkAvatarRemove.slice(22)}`);
+      try {
+        if (editedUserInfo && linkAvatarRemove) {
+          fs.unlinkSync(`uploads/${linkAvatarRemove.slice(22)}`);
+        }
+      } catch (error) {
+        return;
       }
       return response.status(HttpStatus.OK).send(editedUserInfo);
     } catch (error) {
