@@ -32,57 +32,50 @@ model Profile {
 }
 
 model Post {
-  id        String          @id() @default(uuid()) @map("uuid")
-  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String          @unique
+  id        String         @id() @default(uuid()) @map("uuid")
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
   title     String
   content   String
-  createdAt DateTime        @default(now()) @map("createdAt")
-  updatedAt DateTime        @updatedAt @map("updatedAt")
-  gallery   Gallery[]
+  createdAt DateTime       @default(now()) @map("createdAt")
+  updatedAt DateTime       @updatedAt @map("updatedAt")
   tag       PostTag[]
   category  PostCategory[]
   comment   Comment[]
 }
 
 model Category {
-  id        String          @id() @default(uuid()) @map("uuid")
-  name      String          @unique
-  publicStatus     Boolean
-  createdAt DateTime        @default(now()) @map("createdAt")
-  updatedAt DateTime        @updatedAt @map("updatedAt")
-  post      PostCategory[]
+  id           String         @id() @default(uuid()) @map("uuid")
+  name         String         @unique
+  publicStatus Boolean
+  createdAt    DateTime       @default(now()) @map("createdAt")
+  updatedAt    DateTime       @updatedAt @map("updatedAt")
+  post         PostCategory[]
 }
 
 model Tag {
-  id        String     @id() @default(uuid()) @map("uuid")
-  name      String     @unique
-  publicStatus    Boolean
-  createdAt DateTime   @default(now()) @map("createdAt")
-  updatedAt DateTime   @updatedAt @map("updatedAt")
-  post      PostTag[]
-}
-
-model Gallery {
-  id        String   @id() @default(uuid()) @map("uuid")
-  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId    String   @unique
-  createdAt DateTime @default(now()) @map("createdAt")
-  updatedAt DateTime @updatedAt @map("updatedAt")
+  id           String    @id() @default(uuid()) @map("uuid")
+  name         String    @unique
+  publicStatus Boolean
+  createdAt    DateTime  @default(now()) @map("createdAt")
+  updatedAt    DateTime  @updatedAt @map("updatedAt")
+  post         PostTag[]
 }
 
 model PostTag {
+  id     String @id() @default(uuid()) @map("uuid")
   post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId String @unique
+  postId String
   tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
-  tagId  String @unique
+  tagId  String
 }
 
 model PostCategory {
+  id         String   @id() @default(uuid()) @map("uuid")
   post       Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  postId     String   @unique
+  postId     String
   category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  categoryId String   @unique
+  categoryId String
 }
 
 model Comment {
@@ -96,24 +89,24 @@ model Comment {
 }
 
 model AboutAuthor {
-  id           String    @id() @default(uuid()) @map("uuid")
+  id           String       @id() @default(uuid()) @map("uuid")
   fullName     String
   aliasName    String
   introduction String
-  interest    String[]
+  interest     String[]
   reason       String[]
   target       String[]
   experience   String[]
-  createdAt    DateTime  @default(now()) @map("createdAt")
-  updatedAt    DateTime  @updatedAt @map("updatedAt")
-  lifeProcess     LifeProcess?
+  createdAt    DateTime     @default(now()) @map("createdAt")
+  updatedAt    DateTime     @updatedAt @map("updatedAt")
+  lifeProcess  LifeProcess?
 }
 
 model LifeProcess {
   author    AboutAuthor @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  authorId  String       @unique
+  authorId  String      @unique
   title     String
   content   String
-  createdAt DateTime     @default(now()) @map("createdAt")
-  updatedAt DateTime     @updatedAt @map("updatedAt")
+  createdAt DateTime    @default(now()) @map("createdAt")
+  updatedAt DateTime    @updatedAt @map("updatedAt")
 }

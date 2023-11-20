@@ -54,25 +54,21 @@ CREATE TABLE "Tag" (
 );
 
 -- CreateTable
-CREATE TABLE "Gallery" (
+CREATE TABLE "PostTag" (
     "uuid" TEXT NOT NULL,
     "postId" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "tagId" TEXT NOT NULL,
 
-    CONSTRAINT "Gallery_pkey" PRIMARY KEY ("uuid")
-);
-
--- CreateTable
-CREATE TABLE "PostTag" (
-    "postId" TEXT NOT NULL,
-    "tagId" TEXT NOT NULL
+    CONSTRAINT "PostTag_pkey" PRIMARY KEY ("uuid")
 );
 
 -- CreateTable
 CREATE TABLE "PostCategory" (
+    "uuid" TEXT NOT NULL,
     "postId" TEXT NOT NULL,
-    "categoryId" TEXT NOT NULL
+    "categoryId" TEXT NOT NULL,
+
+    CONSTRAINT "PostCategory_pkey" PRIMARY KEY ("uuid")
 );
 
 -- CreateTable
@@ -121,28 +117,10 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 CREATE UNIQUE INDEX "Profile_userId_key" ON "Profile"("userId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Post_userId_key" ON "Post"("userId");
-
--- CreateIndex
 CREATE UNIQUE INDEX "Category_name_key" ON "Category"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Tag_name_key" ON "Tag"("name");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Gallery_postId_key" ON "Gallery"("postId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "PostTag_postId_key" ON "PostTag"("postId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "PostTag_tagId_key" ON "PostTag"("tagId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "PostCategory_postId_key" ON "PostCategory"("postId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "PostCategory_categoryId_key" ON "PostCategory"("categoryId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Comment_postId_key" ON "Comment"("postId");
@@ -158,9 +136,6 @@ ALTER TABLE "Profile" ADD CONSTRAINT "Profile_userId_fkey" FOREIGN KEY ("userId"
 
 -- AddForeignKey
 ALTER TABLE "Post" ADD CONSTRAINT "Post_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("uuid") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Gallery" ADD CONSTRAINT "Gallery_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post"("uuid") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "PostTag" ADD CONSTRAINT "PostTag_postId_fkey" FOREIGN KEY ("postId") REFERENCES "Post"("uuid") ON DELETE CASCADE ON UPDATE CASCADE;

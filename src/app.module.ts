@@ -9,6 +9,7 @@ import { UsersModule } from '@/users/users.module';
 import { AuthorModule } from './author/author.module';
 import { CategoryModule } from './category/category.module';
 import { TagModule } from './tag/tag.module';
+import { PostModule } from './post/post.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { TagModule } from './tag/tag.module';
     AuthorModule,
     CategoryModule,
     TagModule,
+    PostModule,
   ],
   providers: [],
 })

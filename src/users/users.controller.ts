@@ -8,7 +8,6 @@ import {
   NotFoundException,
   Param,
   Patch,
-  Post,
   Res,
   UploadedFile,
   UseInterceptors,
