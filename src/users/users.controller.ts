@@ -113,7 +113,7 @@ export class UsersController {
     @User('role') role: string,
     @Body() data: UpdateInfoDto,
   ) {
-    if (id !== userId && role !== 'admin') {
+    if (id !== userId) {
       throw new BadRequestException(`Request Failed. Not have access`);
     }
     try {
@@ -125,12 +125,10 @@ export class UsersController {
         avatar,
       );
       try {
-        if (editedUserInfo && linkAvatarRemove) {
+        if (avatar && editedUserInfo && linkAvatarRemove) {
           fs.unlinkSync(`uploads/${linkAvatarRemove.slice(22)}`);
         }
-      } catch (error) {
-        return;
-      }
+      } catch (error) {}
       return response.status(HttpStatus.OK).send(editedUserInfo);
     } catch (error) {
       throw new BadRequestException(`Request Failed`);

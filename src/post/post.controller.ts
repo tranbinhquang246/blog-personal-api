@@ -8,6 +8,7 @@ import {
   Res,
   HttpStatus,
   Patch,
+  Query,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -15,6 +16,7 @@ import { User } from '@/users/decorators/users.decorator';
 import { Auth } from '@/auth/decorators/auth.decorators';
 import { Role } from '@/auth/roles/roles.enum';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { FilterPostDto } from './dto/filter-post.dto';
 
 @Controller('post')
 export class PostController {
@@ -37,20 +39,19 @@ export class PostController {
     return response.status(HttpStatus.OK).send(posts);
   }
 
-  @Auth(Role.Admin)
   @Get('creation-data')
   async getCreationData(@Res() response) {
     const creationData = await this.postService.getCreationData();
     return response.status(HttpStatus.OK).send(creationData);
   }
 
-  @Auth(Role.Admin)
   @Get(':id')
   async findOne(@Res() response, @Param('id') id: string) {
     const post = await this.postService.findOne(id);
     return response.status(HttpStatus.OK).send(post);
   }
 
+  @Auth(Role.Admin)
   @Patch(':id')
   update(
     @Res() response,

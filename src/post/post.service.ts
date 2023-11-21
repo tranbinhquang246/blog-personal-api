@@ -6,6 +6,7 @@ import {
 import { CreatePostDto } from './dto/create-post.dto';
 import { PrismaService } from '@/prisma/prisma.service';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { FilterPostDto } from './dto/filter-post.dto';
 
 @Injectable()
 export class PostService {
@@ -47,6 +48,9 @@ export class PostService {
   async findAll() {
     try {
       const posts = await this.prisma.post.findMany({
+        where: {
+          AND: [],
+        },
         include: {
           category: {
             include: {
@@ -65,6 +69,9 @@ export class PostService {
           },
           comment: true,
         },
+        // skip: (filterPostDto.page - 1) * 5 || 0,
+        // take: 5,
+        orderBy: { createdAt: 'desc' },
       });
       return posts;
     } catch (error) {
@@ -77,9 +84,21 @@ export class PostService {
       const posts = await this.prisma.post.findUnique({
         where: { id: id },
         include: {
-          category: true,
-          tag: true,
-          user: true,
+          category: {
+            include: {
+              category: true,
+            },
+          },
+          tag: {
+            include: {
+              tag: true,
+            },
+          },
+          user: {
+            include: {
+              profile: true,
+            },
+          },
           comment: true,
         },
       });
